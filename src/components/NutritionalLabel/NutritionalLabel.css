@@ -1,0 +1,34 @@
+.nutritional-label {
+  display: flex;
+  flex-direction: column;
+  border: solid 2px black;
+  padding: 0.5rem;
+  width: 100%;
+  max-width: 550px;
+}
+
+.nutritional-label .title {
+  border-bottom: solid 4px black;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.nutritional-label .item-name {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.nutritional-label .fact-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.nutritional-label .nutrition-fact {
+  border-bottom: solid 1px rgb(202, 202, 202);
+  font-weight: bold;
+  margin: 2px 0;
+}
+
+.nutritional-label .nutrition-fact span.fact-value {
+  font-weight: normal;
+}

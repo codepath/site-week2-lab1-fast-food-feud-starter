@@ -1,0 +1,36 @@
+.chip {
+  padding: 8px 20px 8px 12px;
+  margin: 8px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: teal;
+  color: white;
+  will-change: transform;
+  transition: transform 0.2s ease;
+}
+.chip:active {
+  transform: translateY(1px);
+}
+.chip:focus {
+  outline: solid 2px pink;
+}
+.chip.active {
+  background: tomato;
+  color: white;
+}
+.chip .label {
+  font-size: 18px;
+}
+.chip .close {
+  display: none;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 10px;
+}
+.chip.active .close {
+  display: block;
+}
