@@ -9,3 +9,18 @@ Here's what they have to say about their vision for the mini-app:
 They've sourced their nutrition data, bootstrapped a React application, and even hired a designer to creat some styles. However, they quickly realized that they didn't know enough React to make this happen, so they've called on Site to fill in the gaps.
 
 Follow the instructions available on the [course portal](https://courses.codepath.org/courses/summer_internship_for_tech_excellence/unit/2#!lab1)
+
+
+## Setting up the lab
+
+Make sure to install the proper dependencies.
+
+```bash
+npm install
+```
+
+Once that's done, run the application like so:
+
+```bash
+npm run dev
+```
