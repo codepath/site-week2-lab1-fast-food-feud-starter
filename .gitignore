@@ -34,9 +34,6 @@ yarn-error.log*
 .env.development
 .env.production
 
-*-lock.*
-*.lock
-
 # turbo
 .turbo
 
