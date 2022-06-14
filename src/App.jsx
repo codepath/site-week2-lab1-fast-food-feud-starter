@@ -50,6 +50,7 @@ export function App() {
     }
   }
 
+  //Commiting elements
   let currentMenuItems = data.filter(menuItem => {
       return menuItem.food_category === selectedCategory && menuItem.restaurant === selectedRestaurant
   })
