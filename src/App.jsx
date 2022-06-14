@@ -34,16 +34,20 @@ export function App() {
       setSelectedRestaurant(restaurant)
   }
 
-  var currentMenu = data.filter;
-  {/*var currentMenuItems = data.filter(menuItem => {
-    return(
-      menuItem.food_category === selected
-    )
-  })*/}
+  const [selectedMenuItem, setSelectedMenuItem] = React.useState(null)
+  const selectMenuItem = (menuItem) => {
+    setSelectedMenuItem(menuItem)
+  }
 
-  let currentMenuItems = data.filter(menuItem => menuItem.food_category === selectCategory && menuItem.restaurant === selectedRestaurant)
+  var currentMenuItems = data.filter(menuItem => {
+      menuItem.food_category === selectedCategory &&
+      menuItem.restaurant === selectedRestaurant
+  })
 
-  menu item ----> pass as prop to nutritionLabels -----> pass down as prop an additional level to nutritionlabelfacts
+
+/*let currentMenuItems = data.filter(menuItem => menuItem.food_category === selectCategory && menuItem.restaurant === selectedRestaurant)*/
+
+ /* menu item ----> pass as prop to nutritionLabels -----> pass down as prop an additional level to nutritionlabelfacts*/
 
 
   return (
@@ -90,11 +94,13 @@ export function App() {
         <div className="MenuDisplay display">
           <div className="MenuItemButtons menu-items">
             <h2 className="title">Menu Items</h2>
-            {/* YOUR CODE HERE 
+            {/* YOUR CODE HERE */}
             {currentMenuItems.map((menuItem) => (
-                <Chip key={menuItem} 
-                      label={menuItem}/>
-            ))} */}
+              <Chip key={menuItem}
+                    label={menuItem}
+                    isActive = {selectedMenuItem === menuItem}
+                    onClick = {() => selectMenuItem(menuItem)}/>
+          ))}
           </div>
 
           {/* NUTRITION FACTS */}
