@@ -3,6 +3,7 @@ import * as React from "react"
 import {Header} from "./components/Header/Header"
 import {Instructions} from "./components/Instructions/Instructions"
 import {Chip} from "./components/Chip/Chip"
+import {NutritionalLabel} from "./components/NutritionalLabel/NutritionalLabel"
 import { createDataSet } from "./data/dataset"
 import "./App.css"
 
@@ -24,32 +25,37 @@ export const appInfo = {
 const { data, categories, restaurants } = createDataSet()
 
 export function App() {
-  const [selectedCategory, setSelectedCategory] = React.useState(null)
-  const selectCategory = (category) => {
-      setSelectedCategory(category)
+  const [selectedCategory, setSelectedCategory] = React.useState(0)
+ 
+  const [selectedRestaurant, setSelectedRestaurant] = React.useState(0)
+
+  const [selectedMenuItem, setSelectedMenuItem] = React.useState(0)
+ 
+  const getInstructions = () => {
+    if((selectedCategory === 0) && (selectedRestaurant === 0))
+    {
+      return appInfo.instructions.start
+    }
+    else if(selectedCategory === 0)
+    {
+      return appInfo.instructions.onlyCategory
+    } else if(selectedCategory === 0)
+    {
+      return appInfo.instructions.onlyRestaurant
+    }else if(selectedMenuItem === 0)
+    {
+      return appInfo.instructions.noSelectedItem
+    }else{
+      return appInfo.instructions.allSelected
+    }
   }
 
-  const [selectedRestaurant, setSelectedRestaurant] = React.useState(null)
-  const selectRestaurant = (restaurant) => {
-      setSelectedRestaurant(restaurant)
-  }
-
-  const [selectedMenuItem, setSelectedMenuItem] = React.useState(null)
-  const selectMenuItem = (menuItem) => {
-    setSelectedMenuItem(menuItem)
-  }
-
-  var currentMenuItems = data.filter(menuItem => {
-      menuItem.food_category === selectedCategory &&
-      menuItem.restaurant === selectedRestaurant
+  let currentMenuItems = data.filter(menuItem => {
+      return menuItem.food_category === selectedCategory && menuItem.restaurant === selectedRestaurant
   })
 
 
-/*let currentMenuItems = data.filter(menuItem => menuItem.food_category === selectCategory && menuItem.restaurant === selectedRestaurant)*/
-
- /* menu item ----> pass as prop to nutritionLabels -----> pass down as prop an additional level to nutritionlabelfacts*/
-
-
+ console.log(selectedMenuItem)
   return (
     <main className="App">
       {/* CATEGORIES COLUMN */}
@@ -61,7 +67,11 @@ export function App() {
               <Chip key={category}
                     label={category}
                     isActive = {selectedCategory === category}
-                    onClick = {() => selectCategory(category)}/>
+                    onClick = {() => setSelectedCategory(category)}
+                    onClose = {(evt) => {
+                      evt.stopPropagation();
+                      setSelectedCategory(0);
+                    }}/>
           ))}
         </div>
       </div>
@@ -82,29 +92,40 @@ export function App() {
               <Chip key={restaurant}
                     label={restaurant}
                     isActive = {selectedRestaurant === restaurant}
-                    onClick = {() => selectRestaurant(restaurant)}/>
+                    onClick = {() => setSelectedRestaurant(restaurant)}
+                    onClose = {(evt) => {
+                      evt.stopPropagation();
+                      setSelectedRestaurant(0);
+                    }}/>
           ))} 
           </div>
         </div>
 
         {/* INSTRUCTIONS GO HERE */}
-        <Instructions instructions= {appInfo.instructions.start}/>
+        <Instructions instructions= {getInstructions()}/>
 
         {/* MENU DISPLAY */}
         <div className="MenuDisplay display">
           <div className="MenuItemButtons menu-items">
             <h2 className="title">Menu Items</h2>
             {/* YOUR CODE HERE */}
-            {currentMenuItems.map((menuItem) => (
-              <Chip key={menuItem}
-                    label={menuItem}
+            {currentMenuItems.map((menuItem, index) => (
+              <Chip key={index}
+                    label={menuItem.item_name}
                     isActive = {selectedMenuItem === menuItem}
-                    onClick = {() => selectMenuItem(menuItem)}/>
+                    onClick = {() => setSelectedMenuItem(menuItem)}
+                    onClose = {(evt) => {
+                      evt.stopPropagation();
+                      setSelectedMenuItem(0);
+                    }}/>
           ))}
           </div>
 
           {/* NUTRITION FACTS */}
-          <div className="NutritionFacts nutrition-facts">{/* YOUR CODE HERE */}</div>
+          <div className="NutritionFacts nutrition-facts">
+            {/* YOUR CODE HERE */}
+            <NutritionalLabel item={selectedMenuItem}/>
+            </div>
         </div>
 
         <div className="data-sources">
