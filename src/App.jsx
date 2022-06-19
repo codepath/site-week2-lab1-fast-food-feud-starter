@@ -64,7 +64,7 @@ export function App() {
         <div className="MenuDisplay display">
           <div className="MenuItemButtons menu-items">
             <h2 className="title">Menu Items</h2>
-            {currentMenuItems.length != 0 ? currentMenuItems.map((menu, idx) => <Chip key={idx} onClick={() => setItem(menu)} label={menu.item_name} isActive={menu.item_name === item ? true : false}/>): null}
+            {currentMenuItems.length != 0 ? currentMenuItems.map((menu, idx) => <Chip key={idx} onClick={() => setItem(menu)} label={menu.item_name} isActive={menu === item ? true : false}/>): null}
           </div>
 
           {/* NUTRITION FACTS */}

@@ -3,7 +3,6 @@ import { nutritionFacts } from "../../constants"
 import "./NutritionalLabel.css"
 
 export function NutritionalLabel(prop) {
-  console.log(prop)
   return (
     <div className="nutritional-label">
       <h3 className="title">Nutrition Facts</h3>
