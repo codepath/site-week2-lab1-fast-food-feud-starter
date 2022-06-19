@@ -30,13 +30,29 @@ export function App() {
   const [res, setRest] = useState('')
   const [item, setItem] = useState('')
 
+  var instructions = appInfo.instructions.start
+  
   var currentMenuItems = [];
+  if (categ !== '' && res === ''){
+    instructions = appInfo.instructions.onlyCategory
+  }
+  if (res !== '' && categ === ''){
+    instructions = appInfo.instructions.onlyRestaurant
+  }
+  if (categ !== '' && res !== ''){
+    instructions = appInfo.instructions.noSelectedItem
+    
+    if (item !== ''){
+      instructions = appInfo.instructions.allSelected
+    }
+  }
+  
+  
   if (categ !== '' && res !== ''){
     currentMenuItems = data.filter((food) => {
       return food.food_category === categ && food.restaurant === res
     })
   }
-
   return (
     <main className="App">
       {/* CATEGORIES COLUMN */}
@@ -58,7 +74,7 @@ export function App() {
             <Chip key={idx} label={rest} onClick={() => setRest(rest)} isActive={rest === res ? true : false}/>))}</div>
         </div>
 
-        <Instructions instructions={appInfo.instructions.start}/>
+        <Instructions instructions={instructions}/>
 
         {/* MENU DISPLAY */}
         <div className="MenuDisplay display">
