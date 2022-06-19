@@ -4,6 +4,10 @@ import Header from "./components/Header/Header"
 import Instructions from "./components/Instructions/Instructions"
 import Chip from "./components/Chip/Chip"
 import NutritionalLabel from "./components/NutritionalLabel/NutritionalLabel"
+import { CategoryColumn } from "./components/CategoryColumn"
+import { RestaurantsRow } from "./components/RestaurantsRow"
+import { MenuDisplay } from "./components/MenuDisplay"
+import { DataSource } from "./components/DataSource"
 import {useState} from "react"
 import { createDataSet } from "./data/dataset"
 import "./App.css"
@@ -47,55 +51,22 @@ export function App() {
     }
   }
   
-  
   if (categ !== '' && res !== ''){
     currentMenuItems = data.filter((food) => {
       return food.food_category === categ && food.restaurant === res
     })
   }
+
   return (
     <main className="App">
-      {/* CATEGORIES COLUMN */}
-      <div className="CategoriesColumn col">
-        <div className="categories options">
-          <h2 className="title">Categories</h2>
-          {categories.map((cat, idx) => (<Chip key={idx} label={cat} onCloseClick={(e) => {
-            e.stopPropagation();
-            setCat('')}} onClick={() => setCat(cat)} isActive={cat === categ ? true : false}/>))}
-        </div>
-      </div>
+      <CategoryColumn setCat={setCat} categ={categ} categories={categories}/>
 
-      {/* MAIN COLUMN */}
       <div className="container">
         <Header title={appInfo.title} tagline={appInfo.tagline} description={appInfo.description}/>
-
-        {/* RESTAURANTS ROW */}
-        <div className="RestaurantsRow">
-          <h2 className="title">Restaurants</h2>
-          <div className="restaurants options">{restaurants.map((rest, idx) => (
-            <Chip key={idx} label={rest} onCloseClick={(e) =>{
-            e.stopPropagation()
-            setRest('')}} onClick={() => setRest(rest)} isActive={rest === res ? true : false}/>))}</div>
-        </div>
-
+        <RestaurantsRow setRest={setRest} res={res} restaurants={restaurants}/>
         <Instructions instructions={instructions}/>
-
-        {/* MENU DISPLAY */}
-        <div className="MenuDisplay display">
-          <div className="MenuItemButtons menu-items">
-            <h2 className="title">Menu Items</h2>
-            {currentMenuItems.length != 0 ? currentMenuItems.map((menu, idx) => <Chip key={idx} onCloseClick={() => {
-              e.stopPropagation()
-              setItem('')}} onClick={() => setItem(menu)} label={menu.item_name} isActive={menu === item ? true : false}/>): null}
-          </div>
-
-          {/* NUTRITION FACTS */}
-          <div className="NutritionFacts nutrition-facts">{item != '' ? <NutritionalLabel item={item}/> : null}</div>
-        </div>
-
-        <div className="data-sources">
-          <p>{appInfo.dataSource}</p>
-        </div>
+        <MenuDisplay setItem={setItem} item={item} currentMenuItems={currentMenuItems}/>
+        <DataSource appInfo={appInfo}/>
       </div>
     </main>
   )
