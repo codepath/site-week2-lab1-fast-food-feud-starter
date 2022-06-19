@@ -59,7 +59,9 @@ export function App() {
       <div className="CategoriesColumn col">
         <div className="categories options">
           <h2 className="title">Categories</h2>
-          {categories.map((cat, idx) => (<Chip key={idx} label={cat} onClick={() => setCat(cat)} isActive={cat === categ ? true : false}/>))}
+          {categories.map((cat, idx) => (<Chip key={idx} label={cat} onCloseClick={(e) => {
+            e.stopPropagation();
+            setCat('')}} onClick={() => setCat(cat)} isActive={cat === categ ? true : false}/>))}
         </div>
       </div>
 
@@ -71,7 +73,9 @@ export function App() {
         <div className="RestaurantsRow">
           <h2 className="title">Restaurants</h2>
           <div className="restaurants options">{restaurants.map((rest, idx) => (
-            <Chip key={idx} label={rest} onClick={() => setRest(rest)} isActive={rest === res ? true : false}/>))}</div>
+            <Chip key={idx} label={rest} onCloseClick={(e) =>{
+            e.stopPropagation()
+            setRest('')}} onClick={() => setRest(rest)} isActive={rest === res ? true : false}/>))}</div>
         </div>
 
         <Instructions instructions={instructions}/>
@@ -80,7 +84,9 @@ export function App() {
         <div className="MenuDisplay display">
           <div className="MenuItemButtons menu-items">
             <h2 className="title">Menu Items</h2>
-            {currentMenuItems.length != 0 ? currentMenuItems.map((menu, idx) => <Chip key={idx} onClick={() => setItem(menu)} label={menu.item_name} isActive={menu === item ? true : false}/>): null}
+            {currentMenuItems.length != 0 ? currentMenuItems.map((menu, idx) => <Chip key={idx} onCloseClick={() => {
+              e.stopPropagation()
+              setItem('')}} onClick={() => setItem(menu)} label={menu.item_name} isActive={menu === item ? true : false}/>): null}
           </div>
 
           {/* NUTRITION FACTS */}
