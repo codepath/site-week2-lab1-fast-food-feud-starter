@@ -10,16 +10,16 @@ export function NutritionalLabel(prop) {
 
       <h4 className="item-name">{prop.item.item_name}</h4>
 
-      <ul className="fact-list">{/* WRITE CODE HERE */}</ul>
+      <ul className="fact-list">{nutritionFacts.map(({id, label, attribute}) => (<NutritionalLabelFact key={id} attribute={attribute} label={label} item={prop.item}/>))}</ul>
     </div>
   )
 }
 
-export function NutritionalLabelFact(props) {
+export function NutritionalLabelFact({attribute, label, item}) {
   return (
     <li className="nutrition-fact">
-      <span className="fact-label">{/* WRITE CODE HERE */}</span>{" "}
-      <span className="fact-value">{/* WRITE CODE HERE */}</span>
+      <span className="fact-label">{label}</span>{" "}
+      <span className="fact-value">{item[attribute]}</span>
     </li>
   )
 }
