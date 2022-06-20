@@ -26,7 +26,9 @@ const { data, categories, restaurants } = createDataSet()
 
 export function App() {
 
-  const [selectedCategory, setSelectedCategory] = useState("");
+  // Este es una prueba
+
+  const [selectedCategory, setSelectedCategory] = useState("");   //usar null y hacer null checkin
   const [selectedRestaurant, setSelectedRestaurant] = useState("");
   const [selectedMenuItem, setSelectedMenuItem] = useState("")
 
