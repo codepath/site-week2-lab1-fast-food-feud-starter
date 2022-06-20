@@ -1,5 +1,6 @@
 import * as React from "react"
 import Header from "./components/Header/Header"
+import Chip from "./components/Chip/Chip"
 import { createDataSet } from "./data/dataset"
 import "./App.css"
 
@@ -39,7 +40,7 @@ export function App() {
         {/* RESTAURANTS ROW */}
         <div className="RestaurantsRow">
           <h2 className="title">Restaurants</h2>
-          <div className="restaurants options">{/* YOUR CODE HERE */}</div>
+          <div className="restaurants options">{restaurants.map(restaurant => <Chip label={restaurant} />)}</div>
         </div>
 
         {/* INSTRUCTIONS GO HERE */}
