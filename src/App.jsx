@@ -28,16 +28,40 @@ export function App() {
 
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedRestaurant, setSelectedRestaurant] = useState("");
+  const [selectedMenuItem, setSelectedMenuItem] = useState("")
 
   const handleCategoryClick = (category) => {
+    if(category===selectedCategory){
+      setSelectedCategory("")
+      return;
+    }
     setSelectedCategory(category)
     return;
   }
 
   const handleRestaurantClick = (restaurant) => {
+    if(restaurant===selectedRestaurant){
+      setSelectedRestaurant("")
+      return;
+    }
     setSelectedRestaurant(restaurant)
     return;
   }
+
+  const handleMenuItemClick = (menuItem) => {
+    if(menuItem===selectedMenuItem){
+      setSelectedMenuItem("")
+      return;
+    }
+    setSelectedMenuItem(item)
+    return;
+  }
+
+  let currentMenuItems = data.filter(
+    (item) => (
+    item.food_category === selectedCategory && 
+    item.restaurant === selectedRestaurant)
+  );
 
   return (
     <main className="App">
@@ -88,6 +112,13 @@ export function App() {
           <div className="MenuItemButtons menu-items">
             <h2 className="title">Menu Items</h2>
             {/* YOUR CODE HERE */}
+            {currentMenuItems.map((item) => (
+              <Chip 
+                key={item.item_name}
+                label={item.item_name}
+                onClick={() => handleMenuItemClick(item)}
+                />
+            ))}
           </div>
 
           {/* NUTRITION FACTS */}
