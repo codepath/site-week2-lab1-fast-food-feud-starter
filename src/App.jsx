@@ -1,5 +1,5 @@
 import * as React from "react"
-// IMPORT ANY NEEDED COMPONENTS HERE
+import Header from "./components/Header/Header"
 import { createDataSet } from "./data/dataset"
 import "./App.css"
 
@@ -23,7 +23,7 @@ const { data, categories, restaurants } = createDataSet()
 export function App() {
   return (
     <main className="App">
-      {/* CATEGORIES COLUMN */}
+      {/*Categories sidebar goes here*/}
       <div className="CategoriesColumn col">
         <div className="categories options">
           <h2 className="title">Categories</h2>
@@ -34,6 +34,7 @@ export function App() {
       {/* MAIN COLUMN */}
       <div className="container">
         {/* HEADER GOES HERE */}
+        <Header info={appInfo} />
 
         {/* RESTAURANTS ROW */}
         <div className="RestaurantsRow">
