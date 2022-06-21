@@ -1,13 +1,17 @@
 import * as React from "react"
 import Chip from "../components/Chip/Chip"
 import { configureSpecSuiteWithUtils } from "./utils"
-import { createDataSet } from "../data/dataset"
-
-const { categories, restaurants } = createDataSet()
+import { Dataset } from "../data/dataset"
 
 export function testPropsAndStyles(App) {
-  const { assert, suite, render, fireEvent, customQueries, bootstrapTestSuiteContext } =
-    configureSpecSuiteWithUtils(App)
+  const {
+    assert,
+    suite,
+    render,
+    cleanup,
+    bootstrapTestSuiteContext,
+    //
+  } = configureSpecSuiteWithUtils(App)
 
   const FeatureTestSuite = suite("FEATURE 003: The `Chip` component and using props to customize styles")
 
@@ -21,11 +25,17 @@ export function testPropsAndStyles(App) {
     ctx.results = results
     ctx.propAssertions = propAssertions
 
-    const categoryChips = results.Chip.filter((chip) => chip.parent.props.className.split(" ").includes("categories"))
-    const restaurantChips = results.Chip.filter((chip) =>
-      chip.parent.props.className.split(" ").includes("restaurants")
-    )
+    const isPTag = (node) => node.type === "p"
+    const nodeHasCategoriesClass = (node) => node.parent.props.className.split(" ").includes("categories")
+    const nodeHasRestaurantsClass = (node) => node.parent.props.className.split(" ").includes("restaurants")
 
+    const categoryParagraphs = results.root?.findAll((node) => isPTag(node) && nodeHasCategoriesClass(node)) ?? []
+    const categoryChips = results.Chip?.filter((chip) => nodeHasCategoriesClass(chip)) ?? []
+    const restaurantParagraphs = results.root?.findAll((node) => isPTag(node) && nodeHasRestaurantsClass(node)) ?? []
+    const restaurantChips = results.Chip?.filter((chip) => nodeHasRestaurantsClass(chip)) ?? []
+
+    ctx.results.categoryParagraphs = categoryParagraphs
+    ctx.results.restaurantParagraphs = restaurantParagraphs
     ctx.results.categoryChips = categoryChips
     ctx.results.restaurantChips = restaurantChips
   })
@@ -36,11 +46,17 @@ export function testPropsAndStyles(App) {
 
   FeatureTestSuite.after.each((ctx) => {
     ctx.sandbox.restore()
+    cleanup()
   })
 
   FeatureTestSuite.after((ctx) => {
     ctx.sandbox.restore()
   })
+
+  /*================================
+   =          CONSTANTS            =
+   =================================*/
+  const { categories, restaurants } = Dataset.createDataSet()
 
   FeatureTestSuite.test("Categories are iterated over and a Chip is rendered for each one.", (ctx) => {
     const { categoryChips } = ctx.results
@@ -66,20 +82,38 @@ export function testPropsAndStyles(App) {
     const { categoryChips, restaurantChips } = ctx.results
 
     const chips = [...categoryChips, ...restaurantChips]
+    for (const category of categories) {
+      assert.ok(
+        chips.find((chip) => chip.props.label === category),
+        `Couldn't find a Chip component for the category ${category}`
+      )
+    }
+    for (const restaurant of restaurants) {
+      assert.ok(
+        chips.find((chip) => chip.props.label === restaurant),
+        `Couldn't find a Chip component for the restaurant ${restaurant}`
+      )
+    }
 
     // either all chips should be active by default
     const allChipsHaveIsActive = chips.every((chip) => (chip?.props?.className?.split?.(" ") ?? "").includes("active"))
 
-    const { findByText, rerender } = render(<Chip label="Chippy Chip" isActive={false} />)
-    const chipParagraph = await findByText("Chippy Chip")
+    const { queryByText, rerender } = render(
+      <main>
+        <Chip label="Chippy Chip" isActive={false} />
+      </main>
+    )
+    const chipParagraph = queryByText("Chippy Chip")
     const chip = chipParagraph?.parentElement
-
     const classesBefore = Array.from(chip?.classList ?? [])
 
-    rerender(<Chip label="Chippy Chip" isActive={true} />)
+    rerender(
+      <main>
+        <Chip label="Chippy Chip" isActive={true} />
+      </main>
+    )
 
     const classesAfter = Array.from(chip?.classList ?? [])
-
     const chipHasActiveClassWhenIsActiveProp = classesAfter.includes("active") && !classesBefore.includes("active")
 
     assert.ok(
