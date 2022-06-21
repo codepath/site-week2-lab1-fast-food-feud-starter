@@ -3,8 +3,16 @@ import { configureSpecSuiteWithUtils } from "./utils"
 import { appInfo } from "../App"
 
 export function testPassingProps(App) {
-  const { assert, suite, render, fireEvent, customQueries, bootstrapTestSuiteContext } =
-    configureSpecSuiteWithUtils(App)
+  const {
+    assert,
+    suite,
+    render,
+    cleanup,
+    customQueries,
+    bootstrapTestSuiteContext,
+    within,
+    //
+  } = configureSpecSuiteWithUtils(App)
 
   const FeatureTestSuite = suite(`FEATURE 001: The \`Header\` component`)
 
@@ -15,7 +23,6 @@ export function testPassingProps(App) {
       singleComponentNames: [
         "Header",
         "Instructions",
-        // "NutritionLabel",
       ],
       multiComponentNames: ["Chip"],
     })
@@ -29,50 +36,14 @@ export function testPassingProps(App) {
 
   FeatureTestSuite.after.each((ctx) => {
     ctx.sandbox.restore()
+    cleanup()
   })
 
   FeatureTestSuite.after((ctx) => {
     ctx.sandbox.restore()
   })
 
-  FeatureTestSuite.test("Header component renders the appropriate site Title", async () => {
-    const { getByText, findByText } = render(<App />)
-
-    assert.ok(getByText("Fast Food Feud", { exact: false, selector: "h1" }), "Couldn't find the site title")
-    assert.ok(await findByText("Fast Food Feud", { exact: false, selector: "h1" }), "Couldn't find the site title")
-  })
-
-  FeatureTestSuite.test("Header component renders the appropriate tagline", async () => {
-    const { getByText, findByText } = render(<App />)
-
-    assert.ok(getByText("Fast Food Feud", { exact: false, selector: "h1" }), "Couldn't find the site title")
-
-    assert.equal(
-      Boolean(await findByText("Folks' Favorite Friendly Fuel Finder For Food Facts", { selector: "h4" })),
-      true,
-      "Couldn't find the proper tagline"
-    )
-    assert.ok(
-      await findByText("Folks' Favorite Friendly Fuel Finder For Food Facts", { selector: "h4" }),
-      "Couldn't find the proper tagline"
-    )
-  })
-
-  FeatureTestSuite.test("Header component renders the appropriate site description prop", async () => {
-    const { getByText, findByText } = render(<App />)
-
-    assert.ok(
-      getByText("is here to arm the public", { exact: false, selector: "p" }),
-      "Site description doesn't exist on the page."
-    )
-
-    assert.ok(
-      await findByText("is here to arm the public", { exact: false, selector: "p" }),
-      "Site description doesn't exist on the page."
-    )
-  })
-
-  FeatureTestSuite.test("Header component receives the correct props", async (ctx) => {
+  FeatureTestSuite.test("`Header` component receives the correct props", async (ctx) => {
     ctx.propAssertions.assertComponentExistsAndHasProps("Header")
 
     ctx.propAssertions.assertComponentExistsAndHasValueInProps("Header", "title")
@@ -88,26 +59,67 @@ export function testPassingProps(App) {
     ctx.propAssertions.assertComponentExistsAndHasPropWithValue("Header", "description", appInfo.description)
   })
 
-  FeatureTestSuite.test(
-    "Instructions component receives props and renders the appropriate instruction",
-    async (ctx) => {
-      const { getByText, findByText } = render(<App />)
+  FeatureTestSuite.test("`Header` component renders the appropriate site title", async () => {
+    const { container, findByText } = render(<App />)
 
-      assert.ok(
-        await findByText(
-          "Start by clicking on a food category on the left and a fast food joint from the list above. Afterwards, you'll be able to choose from a list of menu items and see their nutritional content."
-        ),
-        "Couldn't find the proper instructions"
-      )
+    const Header = customQueries.getHeaderElement(container)
 
-      assert.ok(
-        getByText("clicking on a food category on the left", { exact: false }),
-        "Couldn't find the proper instructions"
-      )
-    }
-  )
+    assert.ok(
+      Header,
+      `The \`Header\` component should be rendered to the screen and should return JSX inside a native HTML \`header\` element.`
+    )
 
-  FeatureTestSuite.test("Instructions component receives the correct props", async (ctx) => {
+    assert.ok(
+      await findByText(appInfo.title, { exact: false, selector: "h1" }),
+      "Couldn't find the site title rendered by the `Header` component in an `h1` tag"
+    )
+    assert.ok(
+      within(Header).getByText(appInfo.title, { exact: false, selector: "h1" }),
+      "Couldn't find the site title rendered by the `Header` component in an `h1` tag"
+    )
+  })
+
+  FeatureTestSuite.test("`Header` component renders the appropriate tagline", async () => {
+    const { container, findByText } = render(<App />)
+
+    const Header = customQueries.getHeaderElement(container)
+
+    assert.ok(
+      Header,
+      `The \`Header\` component should be rendered to the screen and should return JSX inside a native HTML \`header\` element.`
+    )
+
+    assert.ok(
+      await findByText(appInfo.tagline, { exact: true, selector: "h4" }),
+      "Couldn't find the site tagline rendered by the `Header` component in an `h4` tag"
+    )
+    assert.ok(
+      within(Header).getByText(appInfo.tagline, { exact: true, selector: "h4" }),
+      "Couldn't find the site tagline rendered by the `Header` component in an `h4` tag"
+    )
+  })
+
+  FeatureTestSuite.test("`Header` component renders the appropriate site description prop", async () => {
+    const { container, findByText } = render(<App />)
+
+    const Header = customQueries.getHeaderElement(container)
+
+    assert.ok(
+      Header,
+      `The \`Header\` component should be rendered to the screen and should return JSX inside a native HTML \`header\` element.`
+    )
+
+    assert.ok(
+      await findByText("is here to arm the public", { exact: false, selector: "p" }),
+      "Couldn't find the site description rendered by the `Header` component inside a `p` tag"
+    )
+    assert.ok(
+      within(Header).getByText(appInfo.description, { exact: true, selector: "p" }),
+      "Couldn't find the site description rendered by the `Header` component inside a `p` tag"
+    )
+  })
+
+  FeatureTestSuite.test("`Instructions` component receives the correct props", async (ctx) => {
     ctx.propAssertions.assertComponentExistsAndHasProps("Instructions")
     ctx.propAssertions.assertComponentExistsAndHasValueInProps("Instructions", "instructions")
     ctx.propAssertions.assertComponentExistsAndHasPropOfType("Instructions", "instructions", "string")
@@ -117,6 +129,31 @@ export function testPassingProps(App) {
       appInfo.instructions.start
     )
   })
+
+  FeatureTestSuite.test(
+    "`Instructions` component receives props and renders the appropriate instruction",
+    async (ctx) => {
+      const { container, findByText } = render(<App />)
+
+      const Instructions = customQueries.getInstructionsAside(container)
+
+      assert.ok(
+        Instructions,
+        `The \`Instructions\` component should be rendered to the screen and ` +
+          `should return JSX inside a native HTML \`aside\` element with a className of \`instructions\`.`
+      )
+
+      assert.ok(
+        within(Instructions).getByText(appInfo.instructions.start, { exact: true, selector: "p" }),
+        "Couldn't find the start instructions rendered by the `Instructions` component inside a `p` tag"
+      )
+
+      assert.ok(
+        await findByText(appInfo.instructions.start, { exact: true, selector: "p" }),
+        "Couldn't find the start instructions rendered by the `Instructions` component inside a `p` tag"
+      )
+    }
+  )
 
   return FeatureTestSuite.run()
 }

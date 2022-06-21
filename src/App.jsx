@@ -1,6 +1,6 @@
 import * as React from "react"
 // IMPORT ANY NEEDED COMPONENTS HERE
-import { createDataSet } from "./data/dataset"
+import { Dataset } from "./data/dataset"
 import "./App.css"
 
 // don't move this!
@@ -18,9 +18,10 @@ export const appInfo = {
   },
 }
 // or this!
-const { data, categories, restaurants } = createDataSet()
 
 export function App() {
+  const { data, categories, restaurants } = Dataset.createDataSet()
+
   return (
     <main className="App">
       {/* CATEGORIES COLUMN */}
