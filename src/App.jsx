@@ -2,7 +2,7 @@ import * as React from "react";
 import Header from "./components/Header/Header";
 import Chip from "./components/Chip/Chip";
 import Instructions from "./components/Instructions/Instructions";
-// import NutritionalLabel from "./components/NutritionalLabel/NutritionalLabel";
+import NutritionalLabel from "./components/NutritionalLabel/NutritionalLabel";
 import { createDataSet } from "./data/dataset";
 import "./App.css";
 
@@ -27,6 +27,7 @@ export function App() {
     const [activeCategory, setCategory] = React.useState("");
     const [activeRestaurant, setRestaurant] = React.useState("");
     const [activeMenuItem, setMenuItem] = React.useState("");
+    const NutritionContent = activeMenuItem != "" ? data.find((item) => item['item_name'] === activeMenuItem) : null;
     return (
         <main className="App">
             {/*Categories sidebar goes here*/}
@@ -81,7 +82,7 @@ export function App() {
 
                     {/* NUTRITION FACTS */}
                     <div className="NutritionFacts nutrition-facts">
-                        {/* YOUR CODE HERE */}
+                      <NutritionalLabel item={NutritionContent} />
                     </div>
                 </div>
 
