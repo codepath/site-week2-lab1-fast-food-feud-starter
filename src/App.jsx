@@ -29,6 +29,10 @@ export const appInfo = {
 // or this!
 const { data, categories, restaurants } = createDataSet()
 
+function isStringEmtpy(str) {
+  return str === '';
+}
+
 export function App() {
   const [categ, setCat] = useState('')
   const [res, setRest] = useState('')
@@ -37,21 +41,21 @@ export function App() {
   var instructions = appInfo.instructions.start
   
   var currentMenuItems = [];
-  if (categ !== '' && res === ''){
+  if (isStringEmpty(categ) && isStringEmtpy(res)) {
     instructions = appInfo.instructions.onlyCategory
   }
-  if (res !== '' && categ === ''){
+  if (isStringEmtpy(res) && isStringEmtpy(categ)){
     instructions = appInfo.instructions.onlyRestaurant
   }
-  if (categ !== '' && res !== ''){
+  if (isStringEmtpy(categ) && isStringEmtpy(res)){
     instructions = appInfo.instructions.noSelectedItem
     
-    if (item !== ''){
+    if (isStringEmtpy(item)){
       instructions = appInfo.instructions.allSelected
     }
   }
   
-  if (categ !== '' && res !== ''){
+  if (isStringEmtpy(categ) && isStringEmtpy(res)){
     currentMenuItems = data.filter((food) => {
       return food.food_category === categ && food.restaurant === res
     })
