@@ -4,7 +4,7 @@ import "./Chip.css"
 export function Chip({ label = "", isActive = false, onClick, onCloseClick}) {
 
   var buttonClassName = "chip";
-  if (isActive == true){
+  if (isActive == true) {
     buttonClassName = "chip active"
   }
 

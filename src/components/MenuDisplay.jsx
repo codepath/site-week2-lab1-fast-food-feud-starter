@@ -7,7 +7,7 @@ export const MenuDisplay = ({setItem, item, currentMenuItems}) => {
     <div className="MenuDisplay display">
         <div className="MenuItemButtons menu-items">
         <h2 className="title">Menu Items</h2>
-        {currentMenuItems.length != 0 ? currentMenuItems.map((menu, idx) => <Chip key={idx} onCloseClick={() => {
+        {currentMenuItems.length != 0 ? currentMenuItems.map((menu, idx) => <Chip key={idx} onCloseClick={(e) => {
             e.stopPropagation()
             setItem('')}} onClick={() => setItem(menu)} label={menu.item_name} isActive={menu === item ? true : false}/>): null}
         </div>

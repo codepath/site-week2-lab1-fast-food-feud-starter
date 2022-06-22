@@ -2,8 +2,6 @@ import * as React from "react"
 // IMPORT ANY NEEDED COMPONENTS HERE
 import Header from "./components/Header/Header"
 import Instructions from "./components/Instructions/Instructions"
-import Chip from "./components/Chip/Chip"
-import NutritionalLabel from "./components/NutritionalLabel/NutritionalLabel"
 import { CategoryColumn } from "./components/CategoryColumn"
 import { RestaurantsRow } from "./components/RestaurantsRow"
 import { MenuDisplay } from "./components/MenuDisplay"
@@ -30,40 +28,48 @@ export const appInfo = {
 const { data, categories, restaurants } = createDataSet()
 
 export function App() {
-  const [categ, setCat] = useState('')
-  const [res, setRest] = useState('')
+  const [category, setCategory] = useState('')
+  const [restaurant, setRestauraunt] = useState('')
   const [item, setItem] = useState('')
+
+  const isEmptyString = (str) => {
+    return str === ''
+  }
+
+  const isNotEmptyString = (str) => {
+    return str !== ''
+  }
 
   var instructions = appInfo.instructions.start
   
   var currentMenuItems = [];
-  if (categ !== '' && res === ''){
+  if (isNotEmptyString(category) && isEmptyString(restaurant)) {
     instructions = appInfo.instructions.onlyCategory
   }
-  if (res !== '' && categ === ''){
+  if (isNotEmptyString(restaurant) && isEmptyString(category)) {
     instructions = appInfo.instructions.onlyRestaurant
   }
-  if (categ !== '' && res !== ''){
+  if (isNotEmptyString(category) && isNotEmptyString(restaurant)) {
     instructions = appInfo.instructions.noSelectedItem
     
-    if (item !== ''){
+    if (isNotEmptyString(item)) {
       instructions = appInfo.instructions.allSelected
     }
   }
   
-  if (categ !== '' && res !== ''){
+  if (isNotEmptyString(category) && isNotEmptyString(restaurant)) {
     currentMenuItems = data.filter((food) => {
-      return food.food_category === categ && food.restaurant === res
+      return food.food_category === category && food.restaurant === restaurant
     })
   }
 
   return (
     <main className="App">
-      <CategoryColumn setCat={setCat} categ={categ} categories={categories}/>
+      <CategoryColumn setCategory={setCategory} category={category} categories={categories}/>
 
       <div className="container">
         <Header title={appInfo.title} tagline={appInfo.tagline} description={appInfo.description}/>
-        <RestaurantsRow setRest={setRest} res={res} restaurants={restaurants}/>
+        <RestaurantsRow setRestauraunt={setRestauraunt} restaurant={restaurant} restaurants={restaurants}/>
         <Instructions instructions={instructions}/>
         <MenuDisplay setItem={setItem} item={item} currentMenuItems={currentMenuItems}/>
         <DataSource appInfo={appInfo}/>
