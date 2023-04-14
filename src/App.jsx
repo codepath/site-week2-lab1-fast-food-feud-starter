@@ -1,4 +1,3 @@
-import * as React from "react"
 // IMPORT ANY NEEDED COMPONENTS HERE
 import { Dataset } from "./data/dataset"
 import "./App.css"
