@@ -1,5 +1,6 @@
 // IMPORT ANY NEEDED COMPONENTS HERE
 import { Dataset } from "./data/dataset"
+import { Header } from "./components/Header/Header"
 import "./App.css"
 
 // don't move this!
@@ -33,7 +34,7 @@ export function App() {
 
       {/* MAIN COLUMN */}
       <div className="container">
-        {/* HEADER GOES HERE */}
+        <Header title={appInfo.title} tagline={appInfo.tagline} desc={appInfo.description}/>
 
         {/* RESTAURANTS ROW */}
         <div className="RestaurantsRow">
