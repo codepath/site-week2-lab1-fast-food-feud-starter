@@ -31,6 +31,7 @@ export function App() {
   return (
     <main className="App">
       {/* CATEGORIES COLUMN */}
+      <p>all products</p>
       <div className="CategoriesColumn col">
         <div className="categories options">
           <h2 className="title">Categories</h2>
