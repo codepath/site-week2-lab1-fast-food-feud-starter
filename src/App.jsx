@@ -1,7 +1,9 @@
 // IMPORT ANY NEEDED COMPONENTS HERE
-import { Dataset } from "./data/dataset"
-import "./App.css"
-
+import { Dataset } from "./data/dataset";
+import "./App.css";
+import Header from "./components/Header/Header";
+import Instructions from "./components/Instructions/Instructions";
+import Chip from "./components/Chip/Chip";
 // don't move this!
 export const appInfo = {
   title: `Fast Food Feud 🍔!`,
@@ -15,33 +17,54 @@ export const appInfo = {
     noSelectedItem: `Almost there! Choose a menu item and you'll have the fast food facts right at your fingertips!`,
     allSelected: `Great choice! Amazing what a little knowledge can do!`,
   },
-}
+};
 // or this!
+///or this
 
 export function App() {
-  const { data, categories, restaurants } = Dataset.createDataSet()
+  // const myData = Dataset.createDataSet();
+  // const data = myData.data;
+  // const categories = myData.categories;
+  // const restaurants = myData.restaurants
+  const { data, categories, restaurants } = Dataset.createDataSet();
 
   return (
     <main className="App">
       {/* CATEGORIES COLUMN */}
+      <p>all products</p>
       <div className="CategoriesColumn col">
         <div className="categories options">
           <h2 className="title">Categories</h2>
           {/* YOUR CODE HERE */}
+          <p></p>
+          {categories.map((category) => (
+            <Chip key={category} label={category} isActive={isBurger} />
+          ))}
         </div>
       </div>
 
       {/* MAIN COLUMN */}
       <div className="container">
         {/* HEADER GOES HERE */}
+        <Header
+          title={appInfo.title}
+          tagline={appInfo.tagline}
+          description={appInfo.description}
+        />
 
         {/* RESTAURANTS ROW */}
         <div className="RestaurantsRow">
           <h2 className="title">Restaurants</h2>
-          <div className="restaurants options">{/* YOUR CODE HERE */}</div>
+          <div className="restaurants options">
+            {/* YOUR CODE HERE */}
+            {restaurants.map((Restaurant) => (
+              <p key={Restaurant}>{Restaurant}</p>
+            ))}
+          </div>
         </div>
 
         {/* INSTRUCTIONS GO HERE */}
+        <Instructions instructions={appInfo.instructions.start} />
 
         {/* MENU DISPLAY */}
         <div className="MenuDisplay display">
@@ -51,7 +74,9 @@ export function App() {
           </div>
 
           {/* NUTRITION FACTS */}
-          <div className="NutritionFacts nutrition-facts">{/* YOUR CODE HERE */}</div>
+          <div className="NutritionFacts nutrition-facts">
+            {/* YOUR CODE HERE */}
+          </div>
         </div>
 
         <div className="data-sources">
@@ -59,7 +84,7 @@ export function App() {
         </div>
       </div>
     </main>
-  )
+  );
 }
 
-export default App
+export default App;
